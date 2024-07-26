@@ -42,7 +42,7 @@ The project uses two main datasets for training:
 ## Structure
 1.  **data_preprocessing.py**: Handles data cleaning and preparation.
 2.  **classification_using_distilroberta.py**: Script for model training and evaluation.
-3.  **main_file.py**: Main interface for user interaction with the AI system.
+3.  **main_file.py**: Main interface for user interaction with the AI system. GPT-Trained model link(ft:gpt-3.5-turbo-0613:bba-university:mental-disorder:8ebDCFla)
 4.  **requirements.txt**: List of dependencies required for the project.
 
 ## Results
