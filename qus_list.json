@@ -1,0 +1,41 @@
+{
+initial_questions = [
+    "May I ask your gender? and how old you are?",
+    "Can you describe your emotional state over the past few weeks, including any specific moments or experiences that stood out to you?",
+    "What things have been making you worried or stressed? How have you been dealing with these feelings?",
+    "How have your relationships with friends, family, or partners been affecting your life and feelings recently?",
+    "Are you seeking support to improve your well-being, understand yourself better, or navigate life challenges?"
+]
+
+
+class_specific_questions = {
+    "Anxiety": [
+        "Can you describe a time when you felt particularly worried or anxious? What was happening, and how did it make you feel?",
+        "How does worrying affect your day-to-day life? Can you give examples of things you might avoid or struggle with because of anxiety?",
+        "Have you ever experienced a panic attack or a moment of intense fear? What was that like for you?",
+        "In what ways do you try to cope with restlessness or nervousness? What helps you feel more relaxed?",
+        "Can you talk about how your anxiety has impacted your relationships or activities you used to enjoy?"
+    ],
+    "BPD": [
+        "Could you share an experience where your mood changed very quickly? How did those mood swings affect your day or interactions with others?",
+        "Have you ever felt a strong fear of being left alone or abandoned? How does this fear manifest in your relationships or behaviors?",
+        "Can you describe a relationship that has been challenging for you? What patterns have you noticed in how you relate to others?",
+        "Are there times when you've acted impulsively or done something you later regretted? What led to those actions, and how did you feel afterward?",
+        "How do you deal with feelings of emptiness or boredom? Are there activities or thoughts that help fill that void?"
+    ],
+    "Depression": [
+        "Can you tell me about a period when you felt particularly down or hopeless? What was going on in your life, and how did you cope with those feelings?",
+        "Have your interests or hobbies changed due to feeling depressed? What activities have you stopped enjoying, and why?",
+        "How has your appetite or sleep been affected by your mood? Can you describe any specific changes and how they impact your daily life?",
+        "In moments of low self-esteem or guilt, what are the thoughts that go through your mind? Can you share an example?",
+        "What strategies or support have you found helpful in managing your depression? Are there certain things that make you feel a bit better?"
+    ],
+    "Bipolar Disorder": [
+        "During a high-energy phase, what kinds of activities do you find yourself drawn to? Can you describe a time when you felt on top of the world?",
+        "How do your thoughts and speech change during these energetic periods? Can you give an example of an experience where this was noticeable?",
+        "Have you had moments of making decisions that seemed great at the time but were problematic later? What happened, and how did you feel about it afterward?",
+        "Can you share your experience with the lows as well? What does it feel like when you're in a depressive phase?",
+        "How do the changes in your mood affect your life, work, or relationships? Can you describe how you navigate these ups and downs?"
+    ]
+}
+}
