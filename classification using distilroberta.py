@@ -105,8 +105,8 @@ for epoch in range(epochs):
 
 
 # Save the model and tokenizer
-model.save_pretrained("D:/running/save/path_to_save_model_directory")
-tokenizer.save_pretrained("D:/running/save/path_to_save_tokenizer_directory")
+model.save_pretrained(".....save/path_to_save_model_directory")
+tokenizer.save_pretrained(".....save/path_to_save_tokenizer_directory")
 
 #============confusion matrix===============
 
@@ -179,8 +179,8 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 import torch
 
 # Load the saved model and tokenizer
-model = AutoModelForSequenceClassification.from_pretrained("save/path_to_save_model_directory")
-tokenizer = AutoTokenizer.from_pretrained("save/path_to_save_tokenizer_directory")
+model = AutoModelForSequenceClassification.from_pretrained("....save/path_to_save_model_directory")
+tokenizer = AutoTokenizer.from_pretrained("......save/path_to_save_tokenizer_directory")
 
 # Define a function to classify text
 def classify_text(text):
@@ -215,8 +215,8 @@ import torch
 from sklearn.metrics import accuracy_score
 
 # Load the saved model and tokenizer
-model_path = "D:/Paper 10/running_shvm/save/path_to_save_model_directory"
-tokenizer_path = "D:/Paper 10/running_shvm/save/path_to_save_tokenizer_directory"
+model_path = "......save/path_to_save_model_directory"
+tokenizer_path = "...../save/path_to_save_tokenizer_directory"
 model = AutoModelForSequenceClassification.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
 
