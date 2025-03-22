@@ -122,7 +122,7 @@ class_keywords = {
 def send_request_to_gpt(text):
     try:
         response = openai.ChatCompletion.create(
-            model="ft:gpt-3.5-turbo-0613:bba-university:mental-disorder:8ebDCFla",
+            model="OPENAI_API_KEY",
             messages=[{"role": "user", "content": text}],
             temperature=0.8,  # Adjust for randomness
             max_tokens=150,    # Maximum length of the response
