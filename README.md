@@ -38,12 +38,16 @@ The project uses two main datasets for training:
    [Mental Health Conversational Data](https://www.kaggle.com/datasets/elvis23/mental-health-conversational-data)
 2. **Classification Dataset**: Used to train the Distil-RoBERTa model for classifying mental health conditions.
    [Mental Disorders Identification (Reddit NLP)](https://www.kaggle.com/datasets/kamaruladha/mental-disorders-identification-reddit-nlp)
-
-## Structure
+3. Note: Datasets not included due to privacy; see links for access.
+4. **Runtime Data**: User input collected via GUI.
+## Code Structure
 1.  **data_preprocessing.py**: Handles data cleaning and preparation.
 2.  **classification_using_distilroberta.py**: Script for model training and evaluation.
 3.  **main_file.py**: Main interface for user interaction with the AI system. GPT-Trained model link(ft:gpt-3.5-turbo-0613:bba-university:mental-disorder:8ebDCFla)
 4.  **requirements.txt**: List of dependencies required for the project.
+
+## Running the System
+1. **Required fine-tuned GPT 3.5 API**:
 
 ## Results
 The system achieves high accuracy in classifying mental health conditions, with precision, recall, and F1-score around 95%. Detailed performance metrics and confusion matrices are available in the output logs.
