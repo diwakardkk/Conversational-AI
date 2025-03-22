@@ -38,8 +38,7 @@ The project uses two main datasets for training:
    [Mental Health Conversational Data](https://www.kaggle.com/datasets/elvis23/mental-health-conversational-data)
 2. **Classification Dataset**: Used to train the Distil-RoBERTa model for classifying mental health conditions.
    [Mental Disorders Identification (Reddit NLP)](https://www.kaggle.com/datasets/kamaruladha/mental-disorders-identification-reddit-nlp)
-3. Note: Datasets not included due to privacy; see links for access.
-4. **Runtime Data**: User input collected via GUI.
+
 ## Code Structure
 1.  **data_preprocessing.py**: Handles data cleaning and preparation.
 2.  **classification_using_distilroberta.py**: Script for model training and evaluation.
