@@ -15,6 +15,13 @@ This repository contains the implementation of a Conversational AI system design
 ## Overview
 The project combines conversational AI with machine learning to create a diagnostic tool for mental health. The system uses GPT-3.5 to generate responses and Distil-RoBERTa to classify user inputs. It provides a user-friendly interface for interacting with the AI, supporting both text and voice inputs.
 
+
+
+![Research Requirements]([https://raw.githubusercontent.com/your-username/your-repo/main/assets/workflow.png](https://github.com/diwakardkk/Conversational-AI/blob/45ac4a127c6ca6f93737108c1f2ccf14c86053bc/research_requirements.png))
+
+*Figure 1: Research requirements of the Conversational AI model for Mental Disorder Classification.*
+
+
 ## Features
 - **Natural Language Understanding**: Uses GPT-3.5 for generating conversational responses.
 - **Mental Health Classification**: Detects mental health conditions with high accuracy.
