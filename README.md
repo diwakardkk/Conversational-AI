@@ -106,7 +106,6 @@ All images are located in the `results/` directory of this repository.
 | ![ROC Curve](save/ROC.png) | **Figure&nbsp;1.** ROC curves (per‐class, micro, and macro) demonstrating an overall AUC > 0.91 across all mental-health categories. |
 | ![Cross-Entropy](save/cross-entopy.png) | **Figure&nbsp;2.** Cross-entropy loss vs. epochs (training & validation). The “best-val” dotted line marks the epoch with lowest validation loss. |
 | ![Accuracy](save/Train-val-acc.png) | **Figure&nbsp;3.** Training and validation accuracy curves. Both plateau above 95 %, indicating strong generalization with minimal overfitting. |
-| ![Text Pre-processing Flow](save/Text Cleaning 1.png) | **Figure&nbsp;4.** (Part 1)End-to-end text-cleaning workflow, including Unicode normalization, URL removal, contraction expansion, and lemmatization.|
 | ![Text Pre-processing Flow](save/Text Cleaning 1.png) | **Figure&nbsp;4.** (Part 1)End-to-end text-cleaning workflow, including Unicode normalization, URL removal, contraction expansion, and lemmatization. |
 | ![Text Pre-processing Flow](save/text clearning 2.jpg) | **Figure&nbsp;5.** (Part 2). |
 
