@@ -1,0 +1,81 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sentence_transformers import SentenceTransformer
+from sklearn.manifold import TSNE
+import torch
+from tqdm import tqdm
+import os
+
+# ✅ Use GPU if available
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"✅ Using device: {device}")
+
+
+# ✅ Step 1: Load dataset (update your path)
+input_path = "mental_disorders_reddit.csv"
+df = pd.read_csv(input_path)
+print("🔹 Loaded dataset:", df.shape)
+
+# ✅ Step 2: Filter for target classes
+target_classes = ['Anxiety', 'bipolar', 'depression', 'BPD']
+df = df[df['subreddit'].isin(target_classes)].reset_index(drop=True)
+print("🔹 Filtered dataset:", df.shape)
+
+# ✅ Step 3: Generate Sentence-BERT embeddings (on GPU)
+model = SentenceTransformer('all-MiniLM-L6-v2', device=device)
+embeddings = model.encode(df['cleaned_text'].tolist(), show_progress_bar=True, convert_to_numpy=True)
+
+# ✅ Step 4: Reduce dimensions using t-SNE (2D)
+print("🔄 Running t-SNE...")
+tsne = TSNE(n_components=2, perplexity=30, n_iter=1000, random_state=42)
+tsne_embeddings = tsne.fit_transform(embeddings)
+
+# ✅ Step 5: Add t-SNE columns to DataFrame
+df['TSNE-1'] = tsne_embeddings[:, 0]
+df['TSNE-2'] = tsne_embeddings[:, 1]
+
+# ✅ Step 6: Select top 1000 samples closest to centroid (per class)
+selected_samples = []
+
+for cls in target_classes:
+    print(f"🔍 Selecting top 1000 samples for class: {cls}")
+
+    class_df = df[df['subreddit'] == cls].copy()
+
+    # Compute centroid
+    centroid = class_df[['TSNE-1', 'TSNE-2']].mean().values
+
+    # Compute Euclidean distance from centroid
+    class_df['dist_to_centroid'] = np.linalg.norm(class_df[['TSNE-1', 'TSNE-2']].values - centroid, axis=1)
+
+    # Pick top 1000 closest
+    top_1000 = class_df.nsmallest(1000, 'dist_to_centroid')
+    selected_samples.append(top_1000)
+
+# ✅ Combine and save
+df_final = pd.concat(selected_samples).reset_index(drop=True)
+output_path = "best_1000_per_class.csv"
+df_final.to_csv(output_path, index=False)
+
+print(f"\n✅ Saved balanced and filtered dataset: {output_path}")
+print("📊 Final shape:", df_final.shape)
+
+# ✅ Optional: Visualize final selected samples
+plt.figure(figsize=(12, 8))
+sns.scatterplot(
+    x="TSNE-1", y="TSNE-2",
+    hue="subreddit",
+    data=df_final,
+    palette="tab10",
+    s=60,
+    alpha=0.8
+)
+#plt.title("t-SNE: Final 1000 Most Suitable Samples per Class", fontsize=16)
+plt.xlabel("t-SNE Dimension 1", fontsize=18)
+plt.ylabel("t-SNE Dimension 2", fontsize=18)
+plt.legend(title="Subreddit", loc="best")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
