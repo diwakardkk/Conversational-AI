@@ -1,0 +1,153 @@
+
+
+import pandas as pd
+import numpy as np
+import torch
+import matplotlib.pyplot as plt
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, AdamW, get_linear_schedule_with_warmup
+from torch.utils.data import TensorDataset, DataLoader
+from tqdm import tqdm
+
+# ✅ Setup device
+# If GPU is unavailable or causes error, fallback to CPU
+try:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+except:
+    device = torch.device("cpu")
+print("Using device:", device)
+
+# ✅ Load data
+path = "best_1000_per_class.csv"
+df = pd.read_csv(path)
+texts = df['cleaned_text'].tolist()
+labels = pd.factorize(df['subreddit'])[0]
+
+# ✅ Tokenizer
+model_name = 'distilroberta-base'
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+encodings = tokenizer(texts, padding=True, truncation=True, return_tensors="pt", max_length=128)
+
+X_ids = encodings['input_ids']
+X_mask = encodings['attention_mask']
+y = torch.tensor(labels)
+
+# ✅ Cross-validation
+kf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+
+# Evaluation tracking
+acc_list, macro_f1_list, micro_f1_list = [], [], []
+train_losses_fold1, val_losses_fold1 = [], []
+train_acc_fold1, val_acc_fold1 = [], []
+
+# Training params
+epochs = 10
+batch_size = 64
+learning_rate = 1e-6
+weight_decay = 0.01
+dropout = 0.6
+
+for fold, (train_idx, val_idx) in enumerate(kf.split(X_ids, y), start=1):
+    print(f"\n>>> Fold {fold} <<<")
+    # Prepare data
+    train_data = TensorDataset(X_ids[train_idx], X_mask[train_idx], y[train_idx])
+    val_data = TensorDataset(X_ids[val_idx], X_mask[val_idx], y[val_idx])
+    train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
+    val_loader = DataLoader(val_data, batch_size=batch_size)
+
+    # Model
+    model = AutoModelForSequenceClassification.from_pretrained(
+        model_name, num_labels=len(set(labels))
+    ).to(device)
+
+    optimizer = AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    total_steps = len(train_loader) * epochs
+    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=0, num_training_steps=total_steps)
+
+    # Training loop
+    for epoch in range(epochs):
+        model.train()
+        total_train_loss, total_train_correct = 0, 0
+
+        for batch in train_loader:
+            input_ids, att_mask, targets = [b.to(device) for b in batch]
+            outputs = model(input_ids, attention_mask=att_mask, labels=targets)
+            loss, logits = outputs.loss, outputs.logits
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            scheduler.step()
+
+            total_train_loss += loss.item()
+            preds = torch.argmax(logits, dim=1)
+            total_train_correct += (preds == targets).sum().item()
+
+        avg_train_loss = total_train_loss / len(train_loader)
+        train_acc = total_train_correct / len(train_data)
+
+        model.eval()
+        total_val_loss, total_val_correct = 0, 0
+        y_true, y_pred = [], []
+
+        with torch.no_grad():
+            for batch in val_loader:
+                input_ids, att_mask, targets = [b.to(device) for b in batch]
+                outputs = model(input_ids, attention_mask=att_mask, labels=targets)
+                loss, logits = outputs.loss, outputs.logits
+
+                total_val_loss += loss.item()
+                preds = torch.argmax(logits, dim=1)
+                total_val_correct += (preds == targets).sum().item()
+                y_true.extend(targets.cpu().numpy())
+                y_pred.extend(preds.cpu().numpy())
+
+        avg_val_loss = total_val_loss / len(val_loader)
+        val_acc = total_val_correct / len(val_data)
+
+        if fold == 1:
+            train_losses_fold1.append(avg_train_loss)
+            val_losses_fold1.append(avg_val_loss)
+            train_acc_fold1.append(train_acc)
+            val_acc_fold1.append(val_acc)
+
+        print(f"Epoch {epoch+1}: Train loss={avg_train_loss:.4f}, Val loss={avg_val_loss:.4f}, Val Acc={val_acc:.4f}")
+
+    # Evaluation metrics
+    acc = accuracy_score(y_true, y_pred)
+    macro_f1 = f1_score(y_true, y_pred, average='macro')
+    micro_f1 = f1_score(y_true, y_pred, average='micro')
+
+    acc_list.append(acc)
+    macro_f1_list.append(macro_f1)
+    micro_f1_list.append(micro_f1)
+
+    print(f"Fold {fold} Results: Acc={acc:.4f}, Macro-F1={macro_f1:.4f}, Micro-F1={micro_f1:.4f}")
+
+    # Save model after training
+    model_path = f"distilroberta_fold_v4{fold}.pt"
+    torch.save(model.state_dict(), model_path)
+    print(f"✅ Saved model: {model_path}")
+
+# Plot loss and accuracy 
+plt.figure()
+plt.plot(train_losses_fold1, label='Train Loss')
+plt.plot(val_losses_fold1, label='Validation Loss')
+plt.title('Loss per Epoch (Fold 1)')
+plt.xlabel('Epoch'); plt.ylabel('Loss'); plt.legend()
+plt.show()
+
+plt.figure()
+plt.plot(train_acc_fold1, label='Train Accuracy')
+plt.plot(val_acc_fold1, label='Validation Accuracy')
+plt.title('Accuracy per Epoch (Fold 1)')
+plt.xlabel('Epoch'); plt.ylabel('Accuracy'); plt.legend()
+plt.show()
+
+# Average metrics
+print("\nAverage Metrics over 5 Folds:")
+print(f"Accuracy:       {np.mean(acc_list):.4f}")
+print(f"Macro F1-score:  {np.mean(macro_f1_list):.4f}")
+print(f"Micro F1-score:  {np.mean(micro_f1_list):.4f}")
+
+
