@@ -36,12 +36,21 @@ This project proposes a lightweight, efficient, and interpretable hybrid system 
 
 ---
 
-## Dataset Sources
+## Dataset Sources and Code Access via Zenodo
 
+To ensure reproducibility and transparency, the dataset used in this project have been archived on Zenodo and assigned a DOI:
+
+***[Download Dataset and Preprocessing Code on Zenodo](https://doi.org/10.5281/zenodo.16072610)**  
+
+This Zenodo archive includes:
+- Preprocessed CSV dataset used for conversation and training
+- Preprocessed CSV dataset used for classification and training
+The dataset was curated from:
 | Purpose        | Dataset | Link |
 |----------------|---------|------|
 | Conversation   | Mental Health Conversational Dataset | [Kaggle](https://www.kaggle.com/datasets/elvis23/mental-health-conversational-data) |
 | Classification | Mental Disorders Reddit NLP Dataset | [Kaggle](https://www.kaggle.com/datasets/kamaruladha/mental-disorders-identification-reddit-nlp) |
+All original sources are cited and used under their respective licenses. Our processed dataset is released under **CC-BY-4.0**.
 
 ---
 
@@ -57,7 +66,7 @@ This project proposes a lightweight, efficient, and interpretable hybrid system 
 
 ---
 
-## ⚙️ Installation
+## Installation
 
 ```bash
 git clone https://github.com/diwakardkk/Conversational-AI.git
@@ -119,7 +128,7 @@ All images are located in the `results/` directory of this repository.
 > **Tip:** If you regenerate the figures, ensure they are saved in `results/` with the same filenames so the links above remain valid.
 
 
-## 🧾 Performance Summary
+## Performance Summary
 
 | 🧪 **Metric**    | 🔢 **Score**        |
 |------------------|---------------------|
