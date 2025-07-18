@@ -12,7 +12,6 @@ This repository provides the implementation of a research-grade conversational A
 5. [Installation](#installation)
 6. [Reproducibility Guide](#reproducibility-guide)
 7. [Results & Visualizations](#results)
-8. [Citation](#citation)
 9. [License](#license)
 
 ---
@@ -93,7 +92,6 @@ python main_file.py
 ```
 Uses GPT-3.5 to simulate conversation and trigger disease-specific questioning.
 Requires OpenAI API key configured as an environment variable.
-
 
 
 ## 📊 Results & Visualizations
