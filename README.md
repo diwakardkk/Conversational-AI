@@ -16,7 +16,7 @@ This repository provides the implementation of a research-grade conversational A
 
 ---
 
-## 📖 Overview
+##  Overview
 
 This project proposes a lightweight, efficient, and interpretable hybrid system that:
 - Engages in human-like conversation using GPT-3.5.
