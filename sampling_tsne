@@ -18,6 +18,9 @@ input_path = "mental_disorders_reddit.csv"
 df = pd.read_csv(input_path)
 print("🔹 Loaded dataset:", df.shape)
 
+
+# Clear the dataset from the "data_preprocessing.py" for basic cleaning like missing values, Null, etc., then go for step 2 
+
 # ✅ Step 2: Filter for target classes
 target_classes = ['Anxiety', 'bipolar', 'depression', 'BPD']
 df = df[df['subreddit'].isin(target_classes)].reset_index(drop=True)
