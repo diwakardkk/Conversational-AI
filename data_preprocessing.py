@@ -66,61 +66,6 @@ plt.show()
 
 
 
-
-
-#=========filter 500 samples for these four classes ['BPD', 'bipolar', 'depression', 'Anxiety']==================
-
-import pandas as pd
-
-def load_data(file_path, encoding='ISO-8859-1'):
-    try:
-        # Load the CSV file with specified encoding
-        return pd.read_csv(file_path, encoding=encoding)
-    except UnicodeDecodeError as e:
-        print(f"Failed to decode with {encoding}: {e}")
-        return None
-
-def filter_sample_and_combine(data):
-    # Combine 'title' and 'selftext' into a new column 'combined'
-    data['combined'] = data['title'].fillna('') + " " + data['selftext'].fillna('')
-
-    # Define the classes to filter and the number of samples per class
-    classes = ['BPD', 'bipolar', 'depression', 'Anxiety']
-    samples_per_class = 500
-
-    # Initialize an empty DataFrame to store sampled data
-    filtered_data = pd.DataFrame()
-
-    # Loop through each class, filter and sample the data
-    for subreddit in classes:
-        # Filter data for the current class
-        class_data = data[data['subreddit'] == subreddit]
-
-        # Sample the data
-        # Use `min` to handle cases where there are less than 6000 samples available
-        sampled_data = class_data.sample(n=min(samples_per_class, len(class_data)), random_state=42)
-
-        # Append the sampled data to the filtered_data DataFrame
-        filtered_data = pd.concat([filtered_data, sampled_data], ignore_index=True)
-
-    # Select only the 'combined' and 'subreddit' columns to save
-    final_data = filtered_data[['combined', 'subreddit']]
-
-    # Save the filtered and sampled data to a new CSV file
-    final_data.to_csv('combined_samples.csv', index=False)
-    print("Data saved to 'combined_samples.csv' successfully.")
-
-# Main execution block
-if __name__ == "__main__":
-    file_path = 'mental_disorders_reddit.csv'
-    data = load_data(file_path)
-    if data is not None:
-        print("Data filtered successfully.")
-        filter_sample_and_combine(data)
-    else:
-        print("Failed to filter the data.")
-
-
 #=================count_samples_per_class================================
 
 
@@ -227,7 +172,6 @@ def clean_text(data):
 file_path = 'output_combined_samples.csv'  # Replace with your actual file path
 data = load_data(file_path)
 data = clean_text(data)
-
 
 
 #==========word cloud===========================
